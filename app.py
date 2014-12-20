@@ -2,7 +2,6 @@ from flask import Flask, request, abort
 from flask.ext.restful import Resource, Api
 from model.user import db, bcrypt
 from model.redis import redis_store
-from flask_redis import Redis
 from userAPI import UserAPI, LoginAPI
 from todoAPI import TodoAPI
 
