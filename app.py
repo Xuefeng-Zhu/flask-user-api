@@ -2,7 +2,7 @@ from flask import Flask, request, abort
 from flask.ext.restful import Resource, Api
 from model.user import db, bcrypt
 from model.redis import redis_store
-from userAPI import UserAPI, LoginAPI
+from userAPI import UserAPI, LoginAPI, FBUserAPI, FBLoginAPI
 from todoAPI import TodoAPI
 
 app = Flask(__name__)
@@ -24,8 +24,10 @@ api = Api(app)
 
 
 api.add_resource(TodoAPI, '/todos')
-api.add_resource(UserAPI, '/users')
+api.add_resource(UserAPI, '/create_user')
 api.add_resource(LoginAPI, '/login')
+api.add_resource(FBUserAPI, '/fb_creeate_user')
+api.add_resource(FBLoginAPI, '/fb_login')
 
 if __name__ == '__main__':
     app.run(debug=True)

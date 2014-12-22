@@ -11,6 +11,7 @@ bcrypt = Bcrypt()
 class User(db.Document):
     username = db.StringField(unique=True)
     password_hash = db.StringField()
+    fb_id = db.IntField(unique=True)
 
     def hash_password(self, password):
         self.password_hash = bcrypt.generate_password_hash(password)
