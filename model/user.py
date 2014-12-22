@@ -9,9 +9,9 @@ db = MongoEngine()
 bcrypt = Bcrypt()
 
 class User(db.Document):
-    username = db.StringField(unique=True)
+    username = db.StringField(primary_key=True)
     password_hash = db.StringField()
-    fb_id = db.IntField(unique=True)
+    fb_id = db.IntField()
 
     def hash_password(self, password):
         self.password_hash = bcrypt.generate_password_hash(password)

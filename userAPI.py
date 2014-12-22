@@ -17,10 +17,10 @@ class UserAPI(Resource):
             abort(400)    # missing arguments
         user = User(username=username)
         user.hash_password(password)
-        try:
-            user.save()
-        except:
-            return {'status': 'error', 'message': 'username has already existed'}
+        #try:
+        user.save()
+        #except:
+         #   return {'status': 'error', 'message': 'username has already existed'}
         token = user.generate_auth_token(expiration=360000)
         redis_store.set(username, token)
         return ({'status': 'success', 'token': token}, 201)
