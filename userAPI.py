@@ -78,7 +78,7 @@ class FBLoginAPI(Resource):
            abort(400)
 
         fbuser_info = requests.get('https://graph.facebook.com/me?access_token=%s' %fb_token).json()
-        if fb_id != fbuser_info['id']:
+        if not fbuser_info.get('id') or fb_id != fbuser_info['id']:
             abort(406)
 
         username = fbuser_info['name']
