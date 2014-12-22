@@ -63,7 +63,7 @@ class FBUserAPI(Resource):
         try:
             user.save()
         except:
-            return {'status': 'error', 'message': 'username has already existed'}
+            return {'status': 'error', 'message': 'FBname has already existed'}
         token = user.generate_auth_token(expiration=360000)
         redis_store.set(username, token)
         return ({'status': 'success', 'token': token}, 201)
