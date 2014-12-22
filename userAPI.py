@@ -33,7 +33,12 @@ class LoginAPI(Resource):
         password = args['password']
         if username is None or password is None:
             abort(400)
-        user = User.objects(username=username)[0]
+
+        try:    
+            user = User.objects(username=username)[0]
+        except:
+            return {'status': 'error', 'message': 'username does not exist'}
+
         if not user or not user.verify_password(password):
             abort(400)
         token = user.generate_auth_token(expiration=360000)
@@ -82,7 +87,13 @@ class FBLoginAPI(Resource):
             abort(406)
 
         username = fbuser_info['name']
-        user = User.objects(username=username)[0]
+
+        try:
+            user = User.objects(username=username)[0]
+        except:
+            user = User(username=username, fb_id=fbuser_info['id'])
+            user.save()
+
         token = user.generate_auth_token(expiration=360000)
         redis_store.set(username, token)
         return {'token': token}
