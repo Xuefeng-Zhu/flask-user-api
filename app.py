@@ -26,7 +26,7 @@ api = Api(app)
 api.add_resource(TodoAPI, '/todos')
 api.add_resource(UserAPI, '/create_user')
 api.add_resource(LoginAPI, '/login')
-api.add_resource(FBUserAPI, '/fb_creeate_user')
+api.add_resource(FBUserAPI, '/fb_create_user')
 api.add_resource(FBLoginAPI, '/fb_login')
 
 if __name__ == '__main__':

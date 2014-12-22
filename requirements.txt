@@ -4,4 +4,5 @@ flask-mongoengine==0.7.1
 flask-redis==0.0.6
 flask-bcrypt
 itsdangerous==0.24
+requests 
 gunicorn
