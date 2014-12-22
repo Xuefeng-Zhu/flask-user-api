@@ -1,13 +1,18 @@
-from flask import request, abort
-from flask.ext.restful import Resource
+from flask import abort
+from flask.ext.restful import Resource, reqparse
 from model.user import User
 from model.redis import redis_store
+
+userParser = reqparse.RequestParser()
+userParser.add_argument('username', type=str)
+userParser.add_argument('password', type=str)
 
 
 class UserAPI(Resource):
     def post(self):
-        username = request.form.get('username')
-        password = request.form.get('password')
+        args = userParser.parse_args()
+        username = args['username']
+        password = args['password']
         if username is None or password is None:
             abort(400)    # missing arguments
         user = User(username=username)
@@ -21,8 +26,9 @@ class UserAPI(Resource):
 
 class LoginAPI(Resource):
     def post(self):
-        username = request.form.get('username')
-        password = request.form.get('password')
+        args = userParser.parse_args()
+        username = args['username']
+        password = args['password']
         if username is None or password is None:
             abort(400)
         user = User.objects(username=username)[0]
