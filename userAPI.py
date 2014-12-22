@@ -20,10 +20,10 @@ class UserAPI(Resource):
         try:
             user.save()
         except:
-            return {'status': 'error', 'message': 'username has already existed'}
+            abort(406)
         token = user.generate_auth_token(expiration=360000)
         redis_store.set(username, token)
-        return ({'status': 'success', 'username': user.username, 'token': token}, 200)
+        return ({'status': 'success', 'token': token}, 201)
 
 
 class LoginAPI(Resource):
