@@ -47,7 +47,7 @@ fbUserParser.add_argument('fbtoken', type=str)
 
 class FBUserAPI(Resource):
     def post(self):
-        args = userParser.parse_args()
+        args = fbUserParser.parse_args()
         fb_id = args['fbid']
         fb_token = args['fbtoken']
         if fb_id is None or fb_token is None:
@@ -77,11 +77,12 @@ class FBLoginAPI(Resource):
         if fb_id is None or fb_token is None:
            abort(400)
 
-        fbUserInfo = requests.get('https://graph.facebook.com/me?access_token=%s' %fb_token).json()
+        fbuser_info = requests.get('https://graph.facebook.com/me?access_token=%s' %fb_token).json()
         if fb_id != fbuser_info['id']:
             abort(406)
 
-        user = User.objects(username=fbuser_info['name'])[0]
+        username = fbuser_info['name']
+        user = User.objects(username=username)[0]
         token = user.generate_auth_token(expiration=360000)
         redis_store.set(username, token)
         return {'token': token}
