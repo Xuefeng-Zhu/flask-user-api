@@ -9,7 +9,7 @@ db = MongoEngine()
 bcrypt = Bcrypt()
 
 class User(db.Document):
-    username = db.StringField(primary_key=True)
+    username = db.StringField(unique=True)
     password_hash = db.StringField()
     fb_id = db.IntField()
 
