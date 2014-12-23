@@ -9,7 +9,8 @@ db = MongoEngine()
 bcrypt = Bcrypt()
 
 class User(db.Document):
-    username = db.StringField(unique=True)
+    email = db.EmailField(unique=True)
+    username = db.StringField()
     password_hash = db.StringField()
     fb_id = db.IntField()
 
@@ -21,6 +22,6 @@ class User(db.Document):
 
     def generate_auth_token(self, expiration=3600):
         s = Serializer(SECRET_KEY, expires_in=expiration)
-        return s.dumps(self.username)
+        return s.dumps(self.email)
 
 

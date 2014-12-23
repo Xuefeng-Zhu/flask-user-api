@@ -11,12 +11,12 @@ SECRET_KEY = 'flask is cool'
 def verify_auth_token(token):
     s = Serializer(SECRET_KEY)
     try:
-        username = s.loads(token)
+        email = s.loads(token)
     except SignatureExpired:
         return False    # valid token, but expired
     except BadSignature:
         return False    # invalid token
-    if redis_store.get(username) == token:
+    if redis_store.get(email) == token:
         return True
     else:
         return False
