@@ -42,8 +42,8 @@ class ProfileAPI(Resource):
             abort(400)
 
         # load profile 
-        profile =  Profile.objects(email=email)
-        if len(profile) == 0:
+        profile =  Profile.objects(user_email=email)
+        if profile.first() is None:
         	return {}
 
         result = {}
