@@ -88,6 +88,7 @@ class ProfileAPI(Resource):
 
 class ProfileIconAPI(Resource):
     def post(self):
+        return "success"
         uploaded_file = request.files
 
         for file in uploaded_file:
