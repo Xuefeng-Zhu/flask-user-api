@@ -92,7 +92,6 @@ class ProfileIconAPI(Resource):
 
         conn = tinys3.Connection('AKIAI6Y5TYNOTCIHK63Q', 'mmIpQx6mX/oFjZC6snQ7anO0yTOhEbpqPf2pcr0E', 'profile-icon')
         conn.upload('test.py', uploaded_file)
-        print conn.done()
         print dir(uploaded_file)
         print uploaded_file.filename
         return uploaded_file.filename
