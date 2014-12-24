@@ -94,5 +94,4 @@ class ProfileIconAPI(Resource):
         conn.upload('test.py', uploaded_file)
         print dir(uploaded_file)
         print uploaded_file.filename
-        return uploaded_file.filename
-
+        return {'file': uploaded_file.filename}
