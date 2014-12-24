@@ -2,7 +2,7 @@ from flask import request, abort
 from flask.ext.restful import Resource, reqparse
 from model.redis import redis_store
 from model.profile import Profile
-import tinys3
+import boto
 from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
 
@@ -88,11 +88,17 @@ class ProfileAPI(Resource):
 
 class ProfileIconAPI(Resource):
     def post(self):
-        return {'status': 'success'}
-        uploaded_file = request.files['upload']
+        uploaded_file = request.files
 
-        conn = tinys3.Connection('AKIAI6Y5TYNOTCIHK63Q', 'mmIpQx6mX/oFjZC6snQ7anO0yTOhEbpqPf2pcr0E', 'profile-icon', tls=True)
-        conn.upload('test.py', uploaded_file)
+        for file in uploaded_file:
+            return uploaded_file[file].filename
+
+        conn = boto.connect_s3('AKIAI6Y5TYNOTCIHK63Q', 'mmIpQx6mX/oFjZC6snQ7anO0yTOhEbpqPf2pcr0E')
+        # conn = tinys3.Connection('AKIAI6Y5TYNOTCIHK63Q', 'mmIpQx6mX/oFjZC6snQ7anO0yTOhEbpqPf2pcr0E', 'profile-icon', tls=True, endpoint='s3-us-west-2.amazonaws.com')
+        bucket = conn.get_bucket('profile-icon')
+        key = bucket.new_key(uploaded_file.filename)
+        key.set_contents_from_file(uploaded_file)
+        # conn.upload('test.py', uploaded_file.read())
         print dir(conn)
         print dir(uploaded_file)
         print uploaded_file.filename
