@@ -48,7 +48,8 @@ class ProfileAPI(Resource):
 
         result = {}
         for key in profile:
-        	result[key] = profile[key]
+        	if key != "id":
+           	    result[key] = profile[key]
 
         return result
 
@@ -56,10 +57,34 @@ class ProfileAPI(Resource):
     def post(self):
     	args = profileParser.parse_args()
         token = args['token']
+
+        # verify token 
+        if token is None:
+        	abort(400)
+        email = verify_auth_token(token) 
+        if email is None:
+            abort(400)
+
         school = args['school']
         lol_id = args['lolid']
         dota_id = args['dotaid']
-        todo = Profile(text=request.form['data'])
-        todo.save()
+
+        profile = Profile.objects(user_email=email)
+        if profile.first() is None:
+            profile = Profile(user_email=email, school=school, lol_id=lol_id, dota_id=dota_id)
+            profile.save()
+        else:
+            profile = profile[0]
+            profile.school = school
+            profile.lol_id = lol_id
+            profile.dota_id = dota_id
+            profile.save()
+       
+        result = {}
+        for key in profile:
+        	if key != "id":
+        		result[key] = profile[key]
+
+        return result
         return {'status': 'success'}
 
