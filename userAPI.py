@@ -98,7 +98,7 @@ class FBLoginAPI(Resource):
         try:
             user = User.objects(username=username)[0]
         except:
-            fb_email = args['email']
+            fb_email = args['fbemail']
             user = User(email=fb_email ,username=username, fb_id=fbuser_info['id'])
             user.save()
 
