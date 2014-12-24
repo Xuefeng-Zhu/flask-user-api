@@ -90,8 +90,9 @@ class ProfileIconAPI(Resource):
     def post(self):
         uploaded_file = request.files['upload']
 
-        conn = tinys3.Connection('AKIAI6Y5TYNOTCIHK63Q', 'mmIpQx6mX/oFjZC6snQ7anO0yTOhEbpqPf2pcr0E', 'profile-icon')
+        conn = tinys3.Connection('AKIAI6Y5TYNOTCIHK63Q', 'mmIpQx6mX/oFjZC6snQ7anO0yTOhEbpqPf2pcr0E', 'profile-icon', tls=True)
         conn.upload('test.py', uploaded_file)
+        print dir(conn)
         print dir(uploaded_file)
         print uploaded_file.filename
         return {'file': uploaded_file.filename}
