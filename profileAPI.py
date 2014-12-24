@@ -92,14 +92,9 @@ class ProfileIconAPI(Resource):
 
         for file in uploaded_file:
             return uploaded_file[file].filename
-
-        conn = boto.connect_s3('AKIAI6Y5TYNOTCIHK63Q', 'mmIpQx6mX/oFjZC6snQ7anO0yTOhEbpqPf2pcr0E')
-        # conn = tinys3.Connection('AKIAI6Y5TYNOTCIHK63Q', 'mmIpQx6mX/oFjZC6snQ7anO0yTOhEbpqPf2pcr0E', 'profile-icon', tls=True, endpoint='s3-us-west-2.amazonaws.com')
-        bucket = conn.get_bucket('profile-icon')
-        key = bucket.new_key(uploaded_file.filename)
-        key.set_contents_from_file(uploaded_file)
-        # conn.upload('test.py', uploaded_file.read())
-        print dir(conn)
-        print dir(uploaded_file)
-        print uploaded_file.filename
-        return {'file': uploaded_file.filename}
+        return "success"
+        # conn = boto.connect_s3('AKIAI6Y5TYNOTCIHK63Q', 'mmIpQx6mX/oFjZC6snQ7anO0yTOhEbpqPf2pcr0E')
+        # bucket = conn.get_bucket('profile-icon')
+        # key = bucket.new_key(uploaded_file.filename)
+        # key.set_contents_from_file(uploaded_file)
+        # return {'file': uploaded_file.filename}
