@@ -5,4 +5,7 @@ Login
 curl localhost:5000/login -X POST -d "email=123@gmail.com" -d "password=123"
 
 Load Profile 
-curl localhost:5000/profile -d "token=eyJhbGciOiJIUzI1NiIsImV4cCI6MTQxOTc1NDM0NSwiaWF0IjoxNDE5Mzk0MzQ1fQ.IjEyM0BnbWFpbC5jb20i.z0PKp_9Cb7k_5r-Y9IcP2nSVx553sUNJChRhK9XOox8"  
+curl localhost:5000/profile -X GET -d "token=from login api"  
+
+Edit Profile 
+curl localhost:5000/profile -X POST -d "token=from login api" -d "school=UIUC" -d "lol_id=31231" -d "dota_id=31231"
