@@ -88,6 +88,7 @@ class ProfileAPI(Resource):
 
 class ProfileIconAPI(Resource):
     def post(self):
+        return {'status': 'success'}
         uploaded_file = request.files['upload']
 
         conn = tinys3.Connection('AKIAI6Y5TYNOTCIHK63Q', 'mmIpQx6mX/oFjZC6snQ7anO0yTOhEbpqPf2pcr0E', 'profile-icon', tls=True)
