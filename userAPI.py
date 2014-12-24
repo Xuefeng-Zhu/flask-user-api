@@ -27,7 +27,7 @@ class UserAPI(Resource):
         except NotUniqueError, e:
             return {'status': 'error', 'message': e.message}
         token = user.generate_auth_token(expiration=360000)
-        redis_store.set(user.username, token)
+        redis_store.set(user.email, token)
         return ({'status': 'success', 'token': token}, 201)
 
 
@@ -77,7 +77,7 @@ class FBUserAPI(Resource):
         except:
             return {'status': 'error', 'message': 'FBname has already existed'}
         token = user.generate_auth_token(expiration=360000)
-        redis_store.set(user.username, token)
+        redis_store.set(user.email, token)
         return ({'status': 'success', 'token': token}, 201)
 
 
@@ -103,6 +103,6 @@ class FBLoginAPI(Resource):
             user.save()
 
         token = user.generate_auth_token(expiration=360000)
-        redis_store.set(user.username, token)
+        redis_store.set(user.email, token)
         return {'token': token}
 

@@ -1,0 +1,8 @@
+Create User 
+curl localhost:5000/create_user -X POST -d "email=123@gmail.com" -d "username=test" -d "password=123"
+
+Login 
+curl localhost:5000/login -X POST -d "email=123@gmail.com" -d "password=123"
+
+Load Profile 
+curl localhost:5000/profile -d "token=from login api"  

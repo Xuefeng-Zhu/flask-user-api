@@ -1,7 +1,7 @@
 from flask import request, abort
 from flask.ext.restful import Resource, reqparse
 from model.redis import redis_store
-from model.todo import Profile
+from model.profile import Profile
 from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
 
@@ -16,6 +16,7 @@ def verify_auth_token(token):
         return None    # valid token, but expired
     except BadSignature:
         return None    # invalid token
+    print redis_store.get(email)
     if redis_store.get(email) == token:
         return email
     else:
@@ -41,7 +42,7 @@ class ProfileAPI(Resource):
             abort(400)
 
         # load profile 
-        profile =  profile.objects(email=email)
+        profile =  Profile.objects(email=email)
         if len(profile) == 0:
         	return {}
 
@@ -58,7 +59,7 @@ class ProfileAPI(Resource):
         school = args['school']
         lol_id = args['lolid']
         dota_id = args['dotaid']
-        todo = Todo(text=request.form['data'])
+        todo = Profile(text=request.form['data'])
         todo.save()
         return {'status': 'success'}
 
