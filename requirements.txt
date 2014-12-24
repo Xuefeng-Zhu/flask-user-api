@@ -6,3 +6,4 @@ flask-bcrypt
 itsdangerous==0.24
 requests 
 gunicorn
+tinys3

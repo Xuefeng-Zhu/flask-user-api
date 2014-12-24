@@ -4,7 +4,7 @@ from model.user import db, bcrypt
 from model.redis import redis_store
 from userAPI import UserAPI, LoginAPI, FBUserAPI, FBLoginAPI
 from todoAPI import TodoAPI
-from profileAPI import ProfileAPI
+from profileAPI import ProfileAPI, ProfileIconAPI
 
 app = Flask(__name__)
 app.config['MONGODB_SETTINGS'] = {
@@ -29,6 +29,7 @@ api.add_resource(FBUserAPI, '/fb_create_user')
 api.add_resource(FBLoginAPI, '/fb_login')
 api.add_resource(TodoAPI, '/todos')
 api.add_resource(ProfileAPI, '/profile')
+api.add_resource(ProfileIconAPI, '/profile_icon')
 
 if __name__ == '__main__':
     app.run(debug=True)

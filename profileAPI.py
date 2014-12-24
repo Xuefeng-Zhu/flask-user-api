@@ -2,6 +2,7 @@ from flask import request, abort
 from flask.ext.restful import Resource, reqparse
 from model.redis import redis_store
 from model.profile import Profile
+import tinys3
 from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
 
@@ -50,7 +51,6 @@ class ProfileAPI(Resource):
         for key in profile:
         	if key != "id":
            	    result[key] = profile[key]
-
         return result
 
 
@@ -84,7 +84,14 @@ class ProfileAPI(Resource):
         for key in profile:
         	if key != "id":
         		result[key] = profile[key]
-
         return result
-        return {'status': 'success'}
+
+class ProfileIconAPI(Resource):
+    def post(self):
+        uploaded_file = request.files['upload']
+
+        conn = tinys3.Connection('AKIAI6Y5TYNOTCIHK63Q', 'mmIpQx6mX/oFjZC6snQ7anO0yTOhEbpqPf2pcr0E', 'profile-icon')
+        conn.upload('test.py', uploaded_file)
+        print dir(uploaded_file)
+        print uploaded_file.filename
 
