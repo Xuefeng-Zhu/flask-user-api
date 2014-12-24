@@ -29,7 +29,7 @@ api.add_resource(FBUserAPI, '/fb_create_user')
 api.add_resource(FBLoginAPI, '/fb_login')
 api.add_resource(TodoAPI, '/todos')
 api.add_resource(ProfileAPI, '/profile')
-api.add_resource(ProfileIconAPI, '/profile_icon')
+api.add_resource(ProfileIconAPI, '/upload_profile_icon')
 
 if __name__ == '__main__':
     app.run(debug=True)

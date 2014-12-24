@@ -9,3 +9,5 @@ curl localhost:5000/profile -X GET -d "token=from login api"
 
 Edit Profile 
 curl localhost:5000/profile -X POST -d "token=from login api" -d "school=UIUC" -d "lol_id=31231" -d "dota_id=31231"
+
+Upload Profile Icon 
