@@ -88,13 +88,10 @@ class ProfileAPI(Resource):
 
 class ProfileIconAPI(Resource):
     def post(self):
-        uploaded_file = request.files
+        uploaded_file = request.files['upload']
 
-        for file in uploaded_file:
-            return uploaded_file[file].filename
-        return "successed"
-        # conn = boto.connect_s3('AKIAI6Y5TYNOTCIHK63Q', 'mmIpQx6mX/oFjZC6snQ7anO0yTOhEbpqPf2pcr0E')
-        # bucket = conn.get_bucket('profile-icon')
-        # key = bucket.new_key(uploaded_file.filename)
-        # key.set_contents_from_file(uploaded_file)
-        # return {'file': uploaded_file.filename}
+        conn = boto.connect_s3('AKIAI6Y5TYNOTCIHK63Q', 'mmIpQx6mX/oFjZC6snQ7anO0yTOhEbpqPf2pcr0E')
+        bucket = conn.get_bucket('profile-icon')
+        key = bucket.new_key(uploaded_file.filename)
+        key.set_contents_from_file(uploaded_file)
+        return {'file': uploaded_file.filename}
