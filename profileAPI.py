@@ -92,7 +92,7 @@ class ProfileIconAPI(Resource):
 
         for file in uploaded_file:
             return uploaded_file[file].filename
-        return "success"
+        return "successed"
         # conn = boto.connect_s3('AKIAI6Y5TYNOTCIHK63Q', 'mmIpQx6mX/oFjZC6snQ7anO0yTOhEbpqPf2pcr0E')
         # bucket = conn.get_bucket('profile-icon')
         # key = bucket.new_key(uploaded_file.filename)
