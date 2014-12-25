@@ -88,7 +88,7 @@ class ProfileAPI(Resource):
 
 class ProfileIconAPI(Resource):
     def post(self):
-        uploaded_file = request.files['upload']
+        uploaded_file = request.files
 
         for file in uploaded_file:
             return uploaded_file[file].filename
