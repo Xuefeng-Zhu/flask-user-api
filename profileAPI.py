@@ -87,11 +87,33 @@ class ProfileAPI(Resource):
         return result
 
 class ProfileIconAPI(Resource):
-    def post(self):
+    def post(self, token):
+        # verify token 
+        if token is None:
+            abort(400)
+        email = verify_auth_token(token) 
+        if email is None:
+            abort(400)
+
         uploaded_file = request.files['upload']
+        filename = "_".join([email, uploaded_file.filename])
 
         conn = boto.connect_s3('AKIAI6Y5TYNOTCIHK63Q', 'mmIpQx6mX/oFjZC6snQ7anO0yTOhEbpqPf2pcr0E')
         bucket = conn.get_bucket('profile-icon')
-        key = bucket.new_key(uploaded_file.filename)
+        key = bucket.new_key(filename)
         key.set_contents_from_file(uploaded_file)
-        return {'file': uploaded_file.filename}
+
+        profile = Profile.objects(user_email=email)
+        if profile.first() is None:
+            profile = Profile(user_email=email, profile_icon='https://s3-us-west-2.amazonaws.com/profile-icon/%s' %filename)
+            profile.save()
+        else:
+            profile = profile[0]
+            profile.profile_icon = 'https://s3-us-west-2.amazonaws.com/profile-icon/%s' %filename
+            profile.save()
+
+        result = {}
+        for key in profile:
+            if key != "id":
+                result[key] = profile[key]
+        return result
