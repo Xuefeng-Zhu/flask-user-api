@@ -11,4 +11,4 @@ Edit Profile
 curl localhost:5000/profile -X POST -d "token=from login api" -d "school=UIUC" -d "lol_id=31231" -d "dota_id=31231"
 
 Upload Profile Icon 
-curl --form upload=@app.py --form press=OK localhost:5000/upload_profile_icon -X POST
+curl --form upload=@icon.png --form press=OK localhost:5000/upload_profile_icon/<string: token> -X POST

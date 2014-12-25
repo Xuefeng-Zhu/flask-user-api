@@ -47,6 +47,7 @@ class ProfileAPI(Resource):
         if profile.first() is None:
         	return {}
 
+        profile = profile.first()
         result = {}
         for key in profile:
         	if key != "id":
