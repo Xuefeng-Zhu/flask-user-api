@@ -4,11 +4,32 @@ from mongoengine.errors import NotUniqueError, ValidationError
 from model.user import User
 from model.redis import redis_store
 import requests 
+from itsdangerous import (TimedJSONWebSignatureSerializer
+                          as Serializer, BadSignature, SignatureExpired)
+
+
+SECRET_KEY = 'flask is cool'
+
+def verify_auth_token(token):
+    s = Serializer(SECRET_KEY)
+    try:
+        email = s.loads(token)
+    except SignatureExpired:
+        return None    # valid token, but expired
+    except BadSignature:
+        return None    # invalid token
+    print redis_store.get(email)
+    if redis_store.get(email) == token:
+        return email
+    else:
+        return None
+
 
 userParser = reqparse.RequestParser()
 userParser.add_argument('email', type=str)
 userParser.add_argument('username', type=str)
 userParser.add_argument('password', type=str)
+userParser.add_argument('token', type=str)
 
 class UserAPI(Resource):
     def post(self):
@@ -32,6 +53,23 @@ class UserAPI(Resource):
 
 
 class LoginAPI(Resource):
+    # renew token by using old valid token 
+    def get(self):
+        args = userParser.parse_args()
+        token = args['token']
+
+        # verify token 
+        if token is None:
+            abort(400)
+        email = verify_auth_token(token) 
+        if email is None:
+            abort(400)
+
+        user = User.objects(email=email)[0]
+        token = user.generate_auth_token(expiration=360000)
+        redis_store.set(email, token)
+        return {'token': token}
+
     def post(self):
         args = userParser.parse_args()
         email = args['email']
