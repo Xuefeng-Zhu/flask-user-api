@@ -4,6 +4,9 @@ curl localhost:5000/create_user -X POST -d "email=123@gmail.com" -d "username=te
 Login 
 curl localhost:5000/login -X POST -d "email=123@gmail.com" -d "password=123"
 
+Renew Token 
+curl localhost:5000/login -X GET -d "token=from login api"
+
 Load Profile 
 curl localhost:5000/profile -X GET -d "token=from login api"  
 
