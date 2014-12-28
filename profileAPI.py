@@ -44,11 +44,10 @@ class ProfileAPI(Resource):
             abort(400)
 
         # load profile 
-        profile =  Profile.objects(user_email=email)
-        if profile.first() is None:
+        profile =  Profile.objects(user_email=email).first()
+        if profile is None:
         	return {}
 
-        profile = profile.first()
         result = {}
         for key in profile:
         	if key != "id":
@@ -72,12 +71,11 @@ class ProfileAPI(Resource):
         dota_id = args['dota_id']
         hh_stone_id = args['hh_stone_id']
 
-        profile = Profile.objects(user_email=email)
-        if profile.first() is None:
+        profile = Profile.objects(user_email=email).first()
+        if profile is None:
             profile = Profile(user_email=email, school=school, lol_id=lol_id, dota_id=dota_id, hh_stone_id=hh_stone_id)
             profile.save()
         else:
-            profile = profile[0]
             profile.school = school
             profile.lol_id = lol_id
             profile.dota_id = dota_id
@@ -107,12 +105,11 @@ class ProfileIconAPI(Resource):
         key = bucket.new_key(filename)
         key.set_contents_from_file(uploaded_file)
 
-        profile = Profile.objects(user_email=email)
-        if profile.first() is None:
+        profile = Profile.objects(user_email=email).first()
+        if profile is None:
             profile = Profile(user_email=email, profile_icon='https://s3-us-west-2.amazonaws.com/profile-icon/%s' %filename)
             profile.save()
         else:
-            profile = profile[0]
             profile.profile_icon = 'https://s3-us-west-2.amazonaws.com/profile-icon/%s' %filename
             profile.save()
 
