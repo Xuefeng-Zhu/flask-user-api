@@ -100,7 +100,7 @@ class ProfileIconAPI(Resource):
         uploaded_file = request.files['upload']
         filename = "_".join([email, uploaded_file.filename])
 
-        conn = boto.connect_s3('AKIAI6Y5TYNOTCIHK63Q', 'mmIpQx6mX/oFjZC6snQ7anO0yTOhEbpqPf2pcr0E')
+        conn = boto.connect_s3(os.environ['S3_KEY'], os.environ['S3_SECRET'])
         bucket = conn.get_bucket('profile-icon')
         key = bucket.new_key(filename)
         key.set_contents_from_file(uploaded_file)
