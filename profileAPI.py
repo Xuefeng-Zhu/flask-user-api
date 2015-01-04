@@ -6,7 +6,6 @@ from serialize import serialize
 import boto
 
 
-
 profileParser = reqparse.RequestParser()
 profileParser.add_argument('username', type=str)
 profileParser.add_argument('school', type=str)

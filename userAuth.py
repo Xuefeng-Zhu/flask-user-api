@@ -1,5 +1,4 @@
-from flask import abort, current_app
-from flask.ext.restful import reqparse
+from flask import abort, current_app, request
 from model import redis_store
 from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
@@ -11,8 +10,7 @@ authParser.add_argument('token', type=str)
 def auth_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        args = authParser.parse_args()
-        token = args['token']
+        token = request.headers['token']
 
         if token is None:
             abort(401)
