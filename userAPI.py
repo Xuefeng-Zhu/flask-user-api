@@ -2,32 +2,13 @@ from flask import abort
 from flask.ext.restful import Resource, reqparse
 from mongoengine.errors import NotUniqueError, ValidationError
 from model.user import User
-from model.redis import redis_store
+from model import redis_store
+from userAuth import auth_required 
 import requests 
-from itsdangerous import (TimedJSONWebSignatureSerializer
-                          as Serializer, BadSignature, SignatureExpired)
-
-
-SECRET_KEY = 'flask is cool'
-
-def verify_auth_token(token):
-    s = Serializer(SECRET_KEY)
-    try:
-        email = s.loads(token)
-    except SignatureExpired:
-        return None    # valid token, but expired
-    except BadSignature:
-        return None    # invalid token
-    print redis_store.get(email)
-    if redis_store.get(email) == token:
-        return email
-    else:
-        return None
 
 
 userParser = reqparse.RequestParser()
 userParser.add_argument('email', type=str)
-userParser.add_argument('username', type=str)
 userParser.add_argument('password', type=str)
 userParser.add_argument('token', type=str)
 
@@ -35,11 +16,11 @@ class UserAPI(Resource):
     def post(self):
         args = userParser.parse_args()
         email = args['email']
-        username = args['username']
         password = args['password']
-        if email is None or username is None or password is None:
-            abort(400)    # missing arguments
-        user = User(email=email, username=username)
+        if email is None or password is None:
+            abort(400)    
+
+        user = User(email=email)
         user.hash_password(password)
         try:
             user.save()
@@ -47,6 +28,7 @@ class UserAPI(Resource):
             return {'status': 'error', 'message': e.message}  
         except NotUniqueError, e:
             return {'status': 'error', 'message': e.message}
+
         token = user.generate_auth_token(expiration=360000)
         redis_store.set(user.email, token)
         return ({'status': 'success', 'token': token}, 201)
@@ -54,18 +36,9 @@ class UserAPI(Resource):
 
 class LoginAPI(Resource):
     # renew token by using old valid token 
-    def get(self):
-        args = userParser.parse_args()
-        token = args['token']
-
-        # verify token 
-        if token is None:
-            abort(400)
-        email = verify_auth_token(token) 
-        if email is None:
-            abort(400)
-
-        user = User.objects(email=email)[0]
+    @auth_required
+    def get(self, email):
+        user = User.objects(email=email).first()
         token = user.generate_auth_token(expiration=360000)
         redis_store.set(email, token)
         return {'token': token}
@@ -76,14 +49,12 @@ class LoginAPI(Resource):
         password = args['password']
         if email is None or password is None:
             abort(400)
-
-        try:    
-            user = User.objects(email=email)[0]
-        except:
-            return {'status': 'error', 'message': 'username does not exist'}
+  
+        user = User.objects(email=email).first()
 
         if not user or not user.verify_password(password):
             abort(400)
+
         token = user.generate_auth_token(expiration=360000)
         redis_store.set(user.email, token)
         return {'token': token}
@@ -107,13 +78,12 @@ class FBUserAPI(Resource):
         if not fbuser_info.get('id') or fb_id != fbuser_info['id']:
             abort(406)
         
-        username = fbuser_info['name'] 
-        user = User(email=fb_email, username=username, fb_id=fb_id)
-
+        user = User(email=fb_email, fb_id=fb_id)
         try:
             user.save()
         except:
             return {'status': 'error', 'message': 'FBname has already existed'}
+
         token = user.generate_auth_token(expiration=360000)
         redis_store.set(user.email, token)
         return ({'status': 'success', 'token': token}, 201)
@@ -131,13 +101,11 @@ class FBLoginAPI(Resource):
         if not fbuser_info.get('id') or fb_id != fbuser_info['id']:
             abort(406)
 
-        username = fbuser_info['name']
-
-        try:
-            user = User.objects(username=username)[0]
-        except:
-            fb_email = args['fbemail']
-            user = User(email=fb_email ,username=username, fb_id=fbuser_info['id'])
+        fb_email = args['fbemail']
+        user = User.objects(email=fb_email).first()
+        
+        if user is None:
+            user = User(email=fb_email, fb_id=fbuser_info['id'])
             user.save()
 
         token = user.generate_auth_token(expiration=360000)

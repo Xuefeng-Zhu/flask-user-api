@@ -1,9 +1,7 @@
 from flask import Flask, request, abort
 from flask.ext.restful import Resource, Api
-from model.user import db, bcrypt
-from model.redis import redis_store
+from model import db, bcrypt, redis_store
 from userAPI import UserAPI, LoginAPI, FBUserAPI, FBLoginAPI
-from todoAPI import TodoAPI
 from profileAPI import ProfileAPI, ProfileIconAPI
 
 app = Flask(__name__)
@@ -16,6 +14,7 @@ app.config['MONGODB_SETTINGS'] = {
 }
 
 app.config['REDIS_URL'] = "redis://:123123@pub-redis-17784.us-east-1-2.1.ec2.garantiadata.com:17784/0"
+app.config['SECRET_KEY'] = 'flask is cool' 
 
 db.init_app(app)
 bcrypt.init_app(app)
@@ -27,9 +26,9 @@ api.add_resource(UserAPI, '/create_user')
 api.add_resource(LoginAPI, '/login')
 api.add_resource(FBUserAPI, '/fb_create_user')
 api.add_resource(FBLoginAPI, '/fb_login')
-api.add_resource(TodoAPI, '/todos')
+
 api.add_resource(ProfileAPI, '/profile')
-api.add_resource(ProfileIconAPI, '/upload_profile_icon/<string:token>')
+api.add_resource(ProfileIconAPI, '/upload_profile_icon')
 
 if __name__ == '__main__':
     app.run(debug=True)

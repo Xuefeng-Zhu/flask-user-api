@@ -1,12 +1,7 @@
-from flask.ext.mongoengine import MongoEngine
-from flask.ext.bcrypt import Bcrypt
+from flask import current_app
+from model import db, bcrypt
 from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
-
-SECRET_KEY = 'flask is cool'
-
-db = MongoEngine()
-bcrypt = Bcrypt()
 
 class User(db.Document):
     email = db.EmailField(unique=True)
@@ -21,7 +16,7 @@ class User(db.Document):
         return bcrypt.check_password_hash(self.password_hash, password)
 
     def generate_auth_token(self, expiration=3600):
-        s = Serializer(SECRET_KEY, expires_in=expiration)
+        s = Serializer(current_app.config.get('SECRET_KEY'), expires_in=expiration)
         return s.dumps(self.email)
 
 
