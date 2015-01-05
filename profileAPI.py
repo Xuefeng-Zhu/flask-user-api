@@ -4,7 +4,6 @@ from model.profile import Profile
 from userAuth import auth_required
 from serialize import serialize
 import boto
-from bson import ObjectId
 
 
 profileParser = reqparse.RequestParser()
@@ -16,7 +15,7 @@ class ProfileAPI(Resource):
     @auth_required
     def get(self, user_id):
         # load profile 
-        profile =  Profile.objects(user=ObjectId(user_id)).first()
+        profile =  Profile.objects(user=user_id).first()
         if profile is None:
         	return {}
 
@@ -28,7 +27,6 @@ class ProfileAPI(Resource):
         username = args['username']
         school = args['school']
         intro = args['intro']
-
 
         profile = Profile.objects(user=user_id).first()
         if profile is None:
@@ -44,18 +42,18 @@ class ProfileAPI(Resource):
 
 class ProfileIconAPI(Resource):
     @auth_required
-    def post(self, email):
+    def post(self, user_id):
         uploaded_file = request.files['upload']
-        filename = "_".join([email, uploaded_file.filename])
+        filename = "_".join([user_id, uploaded_file.filename])
 
         conn = boto.connect_s3(os.environ['S3_KEY'], os.environ['S3_SECRET'])
         bucket = conn.get_bucket('profile-icon')
         key = bucket.new_key(filename)
         key.set_contents_from_file(uploaded_file)
 
-        profile = Profile.objects(user_email=email).first()
+        profile = Profile.objects(user=user_id).first()
         if profile is None:
-            profile = Profile(user_email=email, profile_icon='https://s3-us-west-2.amazonaws.com/profile-icon/%s' %filename)
+            profile = Profile(user=user_id, profile_icon='https://s3-us-west-2.amazonaws.com/profile-icon/%s' %filename)
             profile.save()
         else:
             profile.profile_icon = 'https://s3-us-west-2.amazonaws.com/profile-icon/%s' %filename
