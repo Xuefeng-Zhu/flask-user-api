@@ -1,17 +1,17 @@
 Create User 
-curl localhost:5000/create_user -X POST -d "email=123@gmail.com" -d "username=test" -d "password=123"
+curl localhost:5000/create_user -X POST -d "email=123@gmail.com" -d "password=123"
 
 Login 
 curl localhost:5000/login -X POST -d "email=123@gmail.com" -d "password=123"
 
 Renew Token 
-curl localhost:5000/login -X GET -d "token=from login api"
+curl localhost:5000/login -X GET --header "token: from login api"
 
 Load Profile 
-curl localhost:5000/profile -X GET -d "token=from login api"  
+curl localhost:5000/profile -X GET --header "token: from login api"  
 
 Edit Profile 
-curl localhost:5000/profile -X POST -d "token=from login api" -d "school=UIUC" -d "lol_id=31231" -d "dota_id=31231"
+curl localhost:5000/profile -X POST --header "token: from login api" -d "usernmae=test" -d "school=UIUC" -d "intro=I am Frank"
 
 Upload Profile Icon 
-curl --form upload=@icon.png --form press=OK localhost:5000/upload_profile_icon/<string: token> -X POST
+curl --form upload=@icon.png --form press=OK localhost:5000/upload_profile_icon -X POST --header "token: from login api"

@@ -4,9 +4,6 @@ from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
 from functools import wraps
 
-authParser = reqparse.RequestParser()
-authParser.add_argument('token', type=str)
-
 def auth_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
