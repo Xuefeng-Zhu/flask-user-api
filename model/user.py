@@ -5,7 +5,6 @@ from itsdangerous import (TimedJSONWebSignatureSerializer
 
 class User(db.Document):
     email = db.EmailField(unique=True)
-    username = db.StringField()
     password_hash = db.StringField()
     fb_id = db.IntField()
 
