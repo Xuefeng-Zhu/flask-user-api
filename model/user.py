@@ -16,6 +16,6 @@ class User(db.Document):
 
     def generate_auth_token(self, expiration=3600):
         s = Serializer(current_app.config.get('SECRET_KEY'), expires_in=expiration)
-        return s.dumps(self.email)
+        return s.dumps(str(self.id))
 
 

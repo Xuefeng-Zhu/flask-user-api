@@ -14,14 +14,14 @@ def auth_required(f):
 
         s = Serializer(current_app.config.get('SECRET_KEY'))
         try:
-            email = s.loads(token)
+            user_id = s.loads(token)
         except SignatureExpired:
             abort(401)    # valid token, but expired
         except BadSignature:
             abort(401)    # invalid token
 
-        if redis_store.get(email) == token:
-            kwargs['email'] = email
+        if redis_store.get(user_id) == token:
+            kwargs['user_id'] = user_id
             return f(*args, **kwargs)
         else:
             abort(401) 

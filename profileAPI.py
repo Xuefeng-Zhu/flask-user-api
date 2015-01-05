@@ -4,6 +4,7 @@ from model.profile import Profile
 from userAuth import auth_required
 from serialize import serialize
 import boto
+from bson import ObjectId
 
 
 profileParser = reqparse.RequestParser()
@@ -13,24 +14,25 @@ profileParser.add_argument('intro', type=str)
 
 class ProfileAPI(Resource):
     @auth_required
-    def get(self, email):
+    def get(self, user_id):
         # load profile 
-        profile =  Profile.objects(user_email=email).first()
+        profile =  Profile.objects(user=ObjectId(user_id)).first()
         if profile is None:
         	return {}
 
         return serialize(profile)
 
     @auth_required
-    def post(self, email):
+    def post(self, user_id):
     	args = profileParser.parse_args()
         username = args['username']
         school = args['school']
         intro = args['intro']
 
-        profile = Profile.objects(user_email=email).first()
+
+        profile = Profile.objects(user=user_id).first()
         if profile is None:
-            profile = Profile(user_email=email, username=username, school=school, intro=intro)
+            profile = Profile(user=user_id, username=username, school=school, intro=intro)
             profile.save()
         else:
             profile.username = username

@@ -10,7 +10,6 @@ import requests
 userParser = reqparse.RequestParser()
 userParser.add_argument('email', type=str)
 userParser.add_argument('password', type=str)
-userParser.add_argument('token', type=str)
 
 class UserAPI(Resource):
     def post(self):
@@ -30,17 +29,17 @@ class UserAPI(Resource):
             return {'status': 'error', 'message': e.message}
 
         token = user.generate_auth_token(expiration=360000)
-        redis_store.set(user.email, token)
+        redis_store.set(str(user.id), token)
         return ({'status': 'success', 'token': token}, 201)
 
 
 class LoginAPI(Resource):
     # renew token by using old valid token 
     @auth_required
-    def get(self, email):
-        user = User.objects(email=email).first()
+    def get(self, user_id):
+        user = User.objects(id=user_id).first()
         token = user.generate_auth_token(expiration=360000)
-        redis_store.set(email, token)
+        redis_store.set(user_id, token)
         return {'token': token}
 
     def post(self):
@@ -56,7 +55,7 @@ class LoginAPI(Resource):
             abort(400)
 
         token = user.generate_auth_token(expiration=360000)
-        redis_store.set(user.email, token)
+        redis_store.set(str(user.id), token)
         return {'token': token}
 
 
@@ -85,7 +84,7 @@ class FBUserAPI(Resource):
             return {'status': 'error', 'message': 'FBname has already existed'}
 
         token = user.generate_auth_token(expiration=360000)
-        redis_store.set(user.email, token)
+        redis_store.set(str(user.id), token)
         return ({'status': 'success', 'token': token}, 201)
 
 
@@ -109,6 +108,6 @@ class FBLoginAPI(Resource):
             user.save()
 
         token = user.generate_auth_token(expiration=360000)
-        redis_store.set(user.email, token)
+        redis_store.set(str(user.id), token)
         return {'token': token}
 
