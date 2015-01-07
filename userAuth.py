@@ -7,8 +7,7 @@ from functools import wraps
 def auth_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        token = request.headers['token']
-
+        token = request.headers.get('token')
         if token is None:
             abort(401)
 

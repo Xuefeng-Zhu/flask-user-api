@@ -2,7 +2,7 @@ from flask import request, abort
 from flask.ext.restful import Resource, reqparse
 from model.profile import Profile
 from userAuth import auth_required
-from serialize import serialize
+from serialize import serialize, profile_search_serialize
 import boto
 
 
@@ -10,6 +10,7 @@ profileParser = reqparse.RequestParser()
 profileParser.add_argument('username', type=str)
 profileParser.add_argument('school', type=str)
 profileParser.add_argument('intro', type=str)
+profileParser.add_argument('page', type=int)
 
 class ProfileAPI(Resource):
     @auth_required
@@ -60,3 +61,19 @@ class ProfileIconAPI(Resource):
             profile.save()
 
         return serialize(profile)
+
+class SearchProfileAPI(Resource):
+    @auth_required
+    def get(self, user_id):
+        args = profileParser.parse_args()
+        username = args['username']
+        school = args['school']
+        page = args['page']
+        if (username is None and school is None):
+            abort(400)
+        if page is None:
+            page = 0
+
+        profiles = Profile.objects(Q(username__icontains=username) | Q(school=school)).only('username', 'icons', 'school')
+        return profile_search_serialize(profiles[10*page:10*(page+1)])
+

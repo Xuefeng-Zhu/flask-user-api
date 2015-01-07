@@ -6,3 +6,14 @@ def serialize(object):
     	else:
        	    result[key] = object[key]
     return result
+
+def profile_search_serialize(profiles):
+	result = []
+	for profile in profiles:
+		result.append({
+			'profile_id': str(profile.id),
+			'username': profile.username,
+			'profile_icon': profile.profile_icon,
+			'school': profile.school
+			})
+	return result

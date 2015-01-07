@@ -15,3 +15,6 @@ curl localhost:5000/profile -X POST --header "token: from login api" -d "usernam
 
 Upload Profile Icon 
 curl --form upload=@icon.png --form press=OK localhost:5000/upload_profile_icon -X POST --header "token: from login api"
+
+Search Profile
+curl localhost:5000/search_profile -X GET --header "token: from login api" -d "school=UIUC"
