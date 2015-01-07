@@ -5,7 +5,6 @@ from userAuth import auth_required
 from serialize import serialize, profile_search_serialize
 import boto
 
-
 profileParser = reqparse.RequestParser()
 profileParser.add_argument('username', type=str)
 profileParser.add_argument('school', type=str)
@@ -74,6 +73,11 @@ class SearchProfileAPI(Resource):
         if page is None:
             page = 0
 
-        profiles = Profile.objects(Q(username__icontains=username) | Q(school=school)).only('username', 'icons', 'school')
+        profiles = Profile.objects.only('username', 'profile_icon', 'school')
+        if username is not None:
+            profiles = profiles.filter(username__icontains=username)
+        if school is not None:
+            profiles = profiles.filter(school=school)
+
         return profile_search_serialize(profiles[10*page:10*(page+1)])
 
