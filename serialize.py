@@ -17,3 +17,15 @@ def profile_search_serialize(profiles):
 			'school': profile.school
 			})
 	return result
+
+def friends_list_serialize(friends_list):
+	result = []
+	for friend in friends_list:
+		print friend
+		result.append({
+			'profile_id': str(friend.id),
+			'username': friend.username,
+			'profile_icon': friend.profile_icon,
+			'school': friend.school
+			})
+	return result

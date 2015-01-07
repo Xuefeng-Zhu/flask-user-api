@@ -18,3 +18,9 @@ curl --form upload=@icon.png --form press=OK localhost:5000/upload_profile_icon 
 
 Search Profile
 curl localhost:5000/search_profile -X GET --header "token: from login api" -d "school=UIUC"
+
+Get Friends List 
+curl localhost:5000/friends_list -X GET --header "token: from login api"
+
+Add to Friends List 
+curl localhost:5000/friends_list -X POST --header "token: from login api" -d "profile_id= "

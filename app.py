@@ -3,6 +3,7 @@ from flask.ext.restful import Resource, Api
 from model import db, bcrypt, redis_store
 from userAPI import UserAPI, LoginAPI, FBUserAPI, FBLoginAPI
 from profileAPI import ProfileAPI, ProfileIconAPI, SearchProfileAPI
+from FriendsAPI import FriendsListAPI
 
 app = Flask(__name__)
 app.config['MONGODB_SETTINGS'] = {
@@ -30,6 +31,8 @@ api.add_resource(FBLoginAPI, '/fb_login')
 api.add_resource(ProfileAPI, '/profile')
 api.add_resource(ProfileIconAPI, '/upload_profile_icon')
 api.add_resource(SearchProfileAPI, '/search_profile')
+
+api.add_resource(FriendsListAPI, '/friends_list')
 
 if __name__ == '__main__':
     app.run(debug=True)
