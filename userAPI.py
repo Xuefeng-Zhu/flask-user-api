@@ -4,6 +4,7 @@ from mongoengine.errors import NotUniqueError, ValidationError
 from model.user import User
 from model import redis_store
 from userAuth import auth_required 
+from emails import send_activate_account_email
 import requests 
 
 
@@ -29,6 +30,7 @@ class UserAPI(Resource):
             return {'status': 'error', 'message': e.message}
 
         token = user.generate_auth_token(expiration=360000)
+        send_activate_account_email(email, token)
         redis_store.set(str(user.id), token)
         return ({'status': 'success', 'token': token}, 201)
 

@@ -7,3 +7,4 @@ itsdangerous==0.24
 requests 
 gunicorn
 boto
+sendgrid

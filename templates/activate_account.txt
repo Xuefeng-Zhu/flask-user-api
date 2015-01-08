@@ -1,0 +1,10 @@
+{% block message %}
+Please confirm your email address by clicking the link below.
+
+Therefore, we are able to activate your account and we may need to send you critical information about our service and it is important that we have an accurate email address.
+
+If you initiated this registration, please visit the link below:
+    {{ activate_account_link }}
+
+If you did not initiate this registration, you may safely ignore this email.
+{% endblock %}
