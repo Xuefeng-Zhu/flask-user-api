@@ -4,6 +4,7 @@ from model.profile import Profile
 from userAuth import auth_required
 from serialize import serialize, profile_search_serialize
 import boto
+import os
 
 profileParser = reqparse.RequestParser()
 profileParser.add_argument('username', type=str)

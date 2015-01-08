@@ -31,8 +31,8 @@ class UserAPI(Resource):
 
         token = user.generate_auth_token(expiration=360000)
         send_activate_account_email(email, token)
-        redis_store.set(str(user.id), token)
-        return ({'status': 'success', 'token': token}, 201)
+
+        return ({'status': 'success', 'message': 'Please check your email to activate your account.'}, 201)
 
 
 class LoginAPI(Resource):
@@ -55,6 +55,8 @@ class LoginAPI(Resource):
 
         if not user or not user.verify_password(password):
             abort(400)
+        if not user.is_activated:
+            return {'status': 'error', 'message': 'The account has not been activated'}
 
         token = user.generate_auth_token(expiration=360000)
         redis_store.set(str(user.id), token)

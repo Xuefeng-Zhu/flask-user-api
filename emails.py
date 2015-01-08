@@ -1,11 +1,9 @@
 from flask import current_app, render_template
 import sendgrid
 import threading
+import os
 
-# sg = sendgrid.SendGridClient(current_app.config.get('SENDGRID_USERNAME'), current_app.config.get('SENDGRID_PASSWORD'))
-sg = sendgrid.SendGridClient('frankzhu', 'flask123123')
-
-
+sg = sendgrid.SendGridClient(os.environ['SENDGRID_USERNAME'], os.environ['SENDGRID_PASSWORD'])
 
 ## Code from https://github.com/lingthio/Flask-User/blob/master/flask_user/emails.py
 def render_email(filename, **kwargs):
