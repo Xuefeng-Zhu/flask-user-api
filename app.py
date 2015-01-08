@@ -1,7 +1,7 @@
 from flask import Flask, request, abort
 from flask.ext.restful import Resource, Api
 from model import db, bcrypt, redis_store
-from userAPI import UserAPI, LoginAPI, FBUserAPI, FBLoginAPI
+from userAPI import UserAPI, LoginAPI, FBUserAPI, FBLoginAPI, ActivateAPI
 from profileAPI import ProfileAPI, ProfileIconAPI, SearchProfileAPI
 from FriendsAPI import FriendsListAPI
 from PasswordAPI import ChangePasswordAPI
@@ -19,6 +19,8 @@ api.add_resource(UserAPI, '/create_user')
 api.add_resource(LoginAPI, '/login')
 api.add_resource(FBUserAPI, '/fb_create_user')
 api.add_resource(FBLoginAPI, '/fb_login')
+api.add_resource(ActivateAPI, '/activate_account/<string:token>')
+
 
 api.add_resource(ChangePasswordAPI, '/change_password')
 

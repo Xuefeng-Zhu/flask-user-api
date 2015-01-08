@@ -3,7 +3,7 @@ from flask.ext.restful import Resource, reqparse
 from mongoengine.errors import NotUniqueError, ValidationError
 from model.user import User
 from model import redis_store
-from userAuth import auth_required 
+from userAuth import auth_required, load_token
 from emails import send_activate_account_email
 import requests 
 
@@ -114,4 +114,16 @@ class FBLoginAPI(Resource):
         token = user.generate_auth_token(expiration=360000)
         redis_store.set(str(user.id), token)
         return {'token': token}
+
+class ActivateAPI(Resource):
+    def get(self, token):
+        user_id = load_token(token)
+
+        user = User.objects(id=user_id).first()
+        if user is None:
+            abort(400)
+        user.is_activated = True
+        user.save()
+
+        return "success"
 
