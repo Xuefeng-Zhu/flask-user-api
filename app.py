@@ -1,5 +1,6 @@
 from flask import Flask, request, abort
 from flask.ext.restful import Resource, Api
+from flask_mail import Mail
 from model import db, bcrypt, redis_store
 from userAPI import UserAPI, LoginAPI, FBUserAPI, FBLoginAPI, ActivateAPI
 from profileAPI import ProfileAPI, ProfileIconAPI, SearchProfileAPI
@@ -12,6 +13,7 @@ app.config.from_object('config')
 db.init_app(app)
 bcrypt.init_app(app)
 redis_store.init_app(app)
+mail = Mail(app)
 
 api = Api(app)
 
