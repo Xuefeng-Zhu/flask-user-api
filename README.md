@@ -2,7 +2,7 @@ flask-user-api
 ==============
 
 ## Config 
-REDIS_URL = ''
+REDIS_URL 
 MONGODB_SETTINGS = {
     'db': 
     'host': 
@@ -10,4 +10,6 @@ MONGODB_SETTINGS = {
     'username': 
     'password': 
 }
-SECRET_KEY = ''
+SECRET_KEY 
+SENDGRID_USERNAME 
+SENDGRID_PASSWORD 
