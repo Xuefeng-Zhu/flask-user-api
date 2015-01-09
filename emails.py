@@ -17,6 +17,7 @@ def send_email(recipient, subject, html_message, text_message):
 
 def send_activate_account_email(user_email, token):
     activate_account_link = 'http://localhost:5000/activate_account/' + token
+    
     # Render subject, html message and text message
     subject = 'Action required: Activate Your Account!'
     html_message, text_message = render_email('activate_account', activate_account_link=activate_account_link)

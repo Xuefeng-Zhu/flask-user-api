@@ -1,8 +1,9 @@
 from flask import abort
 from flask.ext.restful import Resource, reqparse
 from model.user import User
-from model import redis_store
+from model.profile import Profile
 from userAuth import auth_required 
+import random
 
 
 passwordParser = reqparse.RequestParser()
@@ -25,4 +26,38 @@ class ChangePasswordAPI(Resource):
         user.save()
 
         return {'status': 'success'}
+
+
+forgetPasswordParser = reqparse.RequestParser()
+forgetPasswordParser.add_argument('email', type=str)
+forgetPasswordParser.add_argument('username', type=str)
+forgetPasswordParser.add_argument('school', type=str)
+
+class ForgetPasswordAPI(Resource):
+    def post(self):
+        args = forgetPasswordParser.parse_args()
+        email = args['email']
+        username = args['username']
+        school = args['school']
+
+        if email is None or username is None or school is None:
+            abort(400, message="missing required arguments")
+
+        user = User.objects(email=email).first()
+        if user is None:
+            return {'status': 'error', 'message': 'There is no user associated with the email'}
+
+        profile = Profile.objects(user=user).first()
+
+        if not profile.checkInfo(username, school):
+            return {'status': 'error', 'message': 'The information does not match the record'}
+
+        temp_password = (''.join(random.choice(string.ascii_uppercase) for x in range(8)))
+        user.hash_password(temp_password)
+
+        return {'status': 'success', 'message': 'A temperate password has been emailed to you'}
+
+
+
+
 

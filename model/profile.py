@@ -6,4 +6,10 @@ class Profile(db.Document):
 	profile_icon = db.URLField()
 	school = db.StringField()
 	intro = db.StringField()
-	game_info = db.ReferenceField('GameInfo')
+
+	def checkInfo(self, username, school):
+		if self.username != username:
+			return False
+		if self.school != school:
+			return False
+		return True
