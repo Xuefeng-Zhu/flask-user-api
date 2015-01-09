@@ -1,8 +1,8 @@
 from flask import request, abort
 from flask.ext.restful import Resource, reqparse
 from model.friends import Friends
-from userAuth import auth_required
-from serialize import friends_list_serialize
+from util.userAuth import auth_required
+from util.serialize import friends_list_serialize
 
 friendsParser = reqparse.RequestParser()
 friendsParser.add_argument('profile_id', type=str)

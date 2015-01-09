@@ -2,8 +2,8 @@ from flask import abort
 from flask.ext.restful import Resource, reqparse
 from model.user import User
 from model.profile import Profile
-from userAuth import auth_required, load_token
-from emails import send_forget_password_email
+from util.userAuth import auth_required, load_token
+from util.emails import send_forget_password_email
 import random
 
 

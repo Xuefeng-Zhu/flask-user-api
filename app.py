@@ -2,10 +2,10 @@ from flask import Flask, request, abort
 from flask.ext.restful import Resource, Api
 from flask_mail import Mail
 from model import db, bcrypt, redis_store
-from userAPI import UserAPI, LoginAPI, FBUserAPI, FBLoginAPI, ActivateAPI
-from profileAPI import ProfileAPI, ProfileIconAPI, SearchProfileAPI
-from FriendsAPI import FriendsListAPI
-from PasswordAPI import ChangePasswordAPI, ForgetPasswordAPI
+from api.userAPI import UserAPI, LoginAPI, FBUserAPI, FBLoginAPI, ActivateAPI
+from api.profileAPI import ProfileAPI, ProfileIconAPI, SearchProfileAPI
+from api.FriendsAPI import FriendsListAPI
+from api.PasswordAPI import ChangePasswordAPI, ForgetPasswordAPI
 
 app = Flask(__name__)
 app.config.from_object('config')

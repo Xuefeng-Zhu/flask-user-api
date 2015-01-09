@@ -1,8 +1,8 @@
 from flask import request, abort
 from flask.ext.restful import Resource, reqparse
 from model.profile import Profile
-from userAuth import auth_required
-from serialize import serialize, profile_search_serialize
+from util.userAuth import auth_required
+from util.serialize import serialize, profile_search_serialize
 import boto
 import os
 

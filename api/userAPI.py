@@ -1,10 +1,10 @@
 from flask import abort
 from flask.ext.restful import Resource, reqparse
-from mongoengine.errors import NotUniqueError, ValidationError
-from model.user import User
 from model import redis_store
-from userAuth import auth_required, load_token
-from emails import send_activate_account_email
+from model.user import User
+from mongoengine.errors import NotUniqueError, ValidationError
+from util.userAuth import auth_required, load_token
+from util.emails import send_activate_account_email
 import requests 
 
 
