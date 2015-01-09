@@ -122,7 +122,7 @@ class ActivateAPI(Resource):
     def get(self):
         args = activateAccountParser.parse_args()
         token = args['token']
-        if toekn is None:
+        if token is None:
             abort()
 
         user_id = load_token(token)
@@ -132,5 +132,5 @@ class ActivateAPI(Resource):
         user.is_activated = True
         user.save()
 
-        return "success"
+        return "Your account has been activated!"
 
