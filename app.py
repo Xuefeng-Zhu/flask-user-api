@@ -21,7 +21,7 @@ api.add_resource(UserAPI, '/create_user')
 api.add_resource(LoginAPI, '/login')
 api.add_resource(FBUserAPI, '/fb_create_user')
 api.add_resource(FBLoginAPI, '/fb_login')
-api.add_resource(ActivateAPI, '/activate_account/<string:token>')
+api.add_resource(ActivateAPI, '/activate_account')
 
 
 api.add_resource(ChangePasswordAPI, '/change_password')

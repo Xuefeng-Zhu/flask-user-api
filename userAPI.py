@@ -54,7 +54,7 @@ class LoginAPI(Resource):
         user = User.objects(email=email).first()
 
         if not user or not user.verify_password(password):
-            abort(400)
+            return {'status': 'error', 'message': 'The email does not exist or password is wrong'}
         if not user.is_activated:
             return {'status': 'error', 'message': 'The account has not been activated'}
 
@@ -115,10 +115,17 @@ class FBLoginAPI(Resource):
         redis_store.set(str(user.id), token)
         return {'token': token}
 
-class ActivateAPI(Resource):
-    def get(self, token):
-        user_id = load_token(token)
 
+activateAccountParser = reqparse.RequestParser()
+activateAccountParser.add_argument('token', type=str)
+class ActivateAPI(Resource):
+    def get(self):
+        args = activateAccountParser.parse_args()
+        token = args['token']
+        if toekn is None:
+            abort()
+
+        user_id = load_token(token)
         user = User.objects(id=user_id).first()
         if user is None:
             abort(400)
