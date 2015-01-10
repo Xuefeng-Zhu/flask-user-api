@@ -69,6 +69,26 @@ class FriendsRequestAPI(Resource):
         return requests_list_serialize(request.requests_list)  
 
     @auth_required
+    def post(self, user_id):
+        args = friendsParser.parse_args()
+        profile_id = args['profile_id']
+
+        if profile_id is None:
+            abort(400)
+
+        success = Request.objects(user=user_id).only('requests_list').update_one(pull__requests_list=profile_id)
+        if success is 0:
+            abort(400)
+
+        success = Friend.objects(user=user_id).only('friends_list').update_one(add_to_set__friends_list=profile_id)
+        if success is 0:
+            friends = Friend(user=user_id, friends_list=[profile_id])
+            friends.save()
+
+        return {'status': 'success', 'message': 'The user has been added to your friend list'}
+
+
+    @auth_required
     def delete(self, user_id):
         args = friendsParser.parse_args()
         profile_id = args['profile_id']
