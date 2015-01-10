@@ -4,7 +4,7 @@ from flask_mail import Mail
 from model import db, bcrypt, redis_store
 from api.userAPI import UserAPI, LoginAPI, FBUserAPI, FBLoginAPI, ActivateAPI
 from api.profileAPI import ProfileAPI, ProfileIconAPI, SearchProfileAPI
-from api.friendsAPI import FriendsListAPI
+from api.friendsAPI import FriendsListAPI, FriendsRequestAPI
 from api.passwordAPI import ChangePasswordAPI, ForgetPasswordAPI
 
 app = Flask(__name__)
@@ -32,6 +32,7 @@ api.add_resource(ProfileIconAPI, '/upload_profile_icon')
 api.add_resource(SearchProfileAPI, '/search_profile')
 
 api.add_resource(FriendsListAPI, '/friends_list')
+api.add_resource(FriendsRequestAPI, '/friends_request')
 
 if __name__ == '__main__':
     app.run(debug=True)

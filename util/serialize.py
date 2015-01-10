@@ -20,3 +20,6 @@ def profile_search_serialize(profiles):
 
 def friends_list_serialize(friends_list):
 	return profile_search_serialize(friends_list)
+
+def requests_list_serialize(requests_list):
+	return profile_search_serialize(requests_list)
