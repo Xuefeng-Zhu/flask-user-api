@@ -32,6 +32,6 @@ class FriendsListAPI(Resource):
             friends = Friends(user=user_id, friends_list=[profile_id])
             friends.save()
 
-        return {'status': 'success'}
+        return {'status': 'success', 'message': 'The user has been added to your friend list'}
 
 
