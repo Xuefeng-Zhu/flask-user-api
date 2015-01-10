@@ -4,8 +4,8 @@ from flask_mail import Mail
 from model import db, bcrypt, redis_store
 from api.userAPI import UserAPI, LoginAPI, FBUserAPI, FBLoginAPI, ActivateAPI
 from api.profileAPI import ProfileAPI, ProfileIconAPI, SearchProfileAPI
-from api.FriendsAPI import FriendsListAPI
-from api.PasswordAPI import ChangePasswordAPI, ForgetPasswordAPI
+from api.friendsAPI import FriendsListAPI
+from api.passwordAPI import ChangePasswordAPI, ForgetPasswordAPI
 
 app = Flask(__name__)
 app.config.from_object('config')
