@@ -30,3 +30,6 @@ curl localhost:5000/friends_list -X GET --header "token: from login api"
 
 Add to Friends List 
 curl localhost:5000/friends_list -X POST --header "token: from login api" -d "profile_id= "
+
+Delete from Friends List 
+curl localhost:5000/friends_list -X DELETE --header "token: from login api" -d "profile_id= "
