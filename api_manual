@@ -37,3 +37,6 @@ curl localhost:5000/friends_list -X DELETE --header "token: from login api" -d "
 Get Friends Request List 
 curl localhost:5000/friends_request -X GET --header "token: from login api"
 
+Post a Friend Post
+curl localhost:5000/post -X POST --header "token: from login api" -d "content=I want to find someone to talk"
+

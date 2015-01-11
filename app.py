@@ -6,6 +6,7 @@ from api.userAPI import UserAPI, LoginAPI, FBUserAPI, FBLoginAPI, ActivateAPI
 from api.profileAPI import ProfileAPI, ProfileIconAPI, SearchProfileAPI
 from api.friendsAPI import FriendsListAPI, FriendsRequestAPI
 from api.passwordAPI import ChangePasswordAPI, ForgetPasswordAPI
+from api.postAPI import PostAPI
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -33,6 +34,8 @@ api.add_resource(SearchProfileAPI, '/search_profile')
 
 api.add_resource(FriendsListAPI, '/friends_list')
 api.add_resource(FriendsRequestAPI, '/friends_request')
+
+api.add_resource(PostAPI, '/post')
 
 if __name__ == '__main__':
     app.run(debug=True)
