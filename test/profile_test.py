@@ -31,6 +31,7 @@ def search_profile(token):
 	r = requests.get(search_profile_url, headers=headers, data = search_data)
 	result = json.loads(r.content)
 	assert result[0]['school'] == search_data['school']
+	return result
 
 if __name__ == '__main__':
 	login = login()
