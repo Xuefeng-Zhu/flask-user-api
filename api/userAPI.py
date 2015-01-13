@@ -34,10 +34,14 @@ class UserAPI(Resource):
         token = user.generate_auth_token(expiration=360000)
         send_activate_account_email(email, token)
 
-        return ({'status': 'success', 'message': 'Please check your email to activate your account.'}, 201)
+        return ({'status': 'success', 'message':
+                 'Please check your email to activate your account.'}, 201)
 
 
 class LoginAPI(Resource):
+
+    def options(self):
+        pass
     # renew token by using old valid token
 
     @auth_required
@@ -57,9 +61,11 @@ class LoginAPI(Resource):
         user = User.objects(email=email).first()
 
         if not user or not user.verify_password(password):
-            return {'status': 'error', 'message': 'The email does not exist or password is wrong'}
+            return {'status': 'error', 'message':
+                    'The email does not exist or password is wrong'}
         if not user.is_activated:
-            return {'status': 'error', 'message': 'The account has not been activated'}
+            return {'status': 'error', 'message':
+                    'The account has not been activated'}
 
         token = user.generate_auth_token(expiration=360000)
         redis_store.set(str(user.id), token)

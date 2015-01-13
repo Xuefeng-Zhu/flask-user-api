@@ -12,36 +12,41 @@ profileParser.add_argument('school', type=str)
 profileParser.add_argument('intro', type=str)
 profileParser.add_argument('page', type=int)
 
+
 class ProfileAPI(Resource):
+
     @auth_required
     def get(self, user_id):
-        # load profile 
-        profile =  Profile.objects(user=user_id).first()
+        # load profile
+        profile = Profile.objects(user=user_id).first()
         if profile is None:
-        	return {}
+            return {}
 
         return serialize(profile)
 
     @auth_required
     def post(self, user_id):
-    	args = profileParser.parse_args()
+        args = profileParser.parse_args()
         username = args['username']
         school = args['school']
         intro = args['intro']
 
         profile = Profile.objects(user=user_id).first()
         if profile is None:
-            profile = Profile(user=user_id, username=username, school=school, intro=intro)
+            profile = Profile(
+                user=user_id, username=username, school=school, intro=intro)
             profile.save()
         else:
             profile.username = username
             profile.school = school
             profile.intro = intro
             profile.save()
-       
+
         return serialize(profile)
 
+
 class ProfileIconAPI(Resource):
+
     @auth_required
     def post(self, user_id):
         uploaded_file = request.files['upload']
@@ -54,15 +59,18 @@ class ProfileIconAPI(Resource):
 
         profile = Profile.objects(user=user_id).first()
         if profile is None:
-            profile = Profile(user=user_id, profile_icon='https://s3-us-west-2.amazonaws.com/profile-icon/%s' %filename)
+            profile = Profile(user=user_id, profile_icon=
+                              'https://s3-us-west-2.amazonaws.com/profile-icon/%s' % filename)
             profile.save()
         else:
-            profile.profile_icon = 'https://s3-us-west-2.amazonaws.com/profile-icon/%s' %filename
+            profile.profile_icon = 'https://s3-us-west-2.amazonaws.com/profile-icon/%s' % filename
             profile.save()
 
         return serialize(profile)
 
+
 class SearchProfileAPI(Resource):
+
     @auth_required
     def get(self, user_id):
         args = profileParser.parse_args()
@@ -80,5 +88,4 @@ class SearchProfileAPI(Resource):
         if school is not None:
             profiles = profiles.filter(school=school)
 
-        return profile_search_serialize(profiles[10*page:10*(page+1)])
-
+        return profile_search_serialize(profiles[10 * page:10 * (page + 1)])

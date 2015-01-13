@@ -4,6 +4,7 @@ from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
 from functools import wraps
 
+
 def load_token(token):
     s = Serializer(current_app.config.get('SECRET_KEY'))
     try:
@@ -13,6 +14,7 @@ def load_token(token):
     except BadSignature:
         abort(401)    # invalid token
     return user_id
+
 
 def auth_required(f):
     @wraps(f)
@@ -27,6 +29,6 @@ def auth_required(f):
             kwargs['user_id'] = user_id
             return f(*args, **kwargs)
         else:
-            abort(401) 
+            abort(401)
 
     return decorated_function
