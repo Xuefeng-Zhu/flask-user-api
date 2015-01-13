@@ -4,6 +4,9 @@ curl localhost:5000/create_user -X POST -d "email=123@gmail.com" -d "password=12
 Login 
 curl localhost:5000/login -X POST -d "email=123@gmail.com" -d "password=123"
 
+FB Login 
+curl localhost:5000/fb_login -X POST -d "fbtoken=CAAWFWZCaHh38BAKW2k8CTczcC45chZCjluWKCpZA0XqYwcdk7mBNZC9IbdV98IGq99DGRAwuByssdJ0lK11oHs5221aNrpTmg95Ggl4pZAZBsItzyeDY3XAAkvQvQgBcZBZAX2LZAuQNZCpoKXHrgnJKg6tfX9Eqw58sZBttGOQdmqF6QbTWTlzQEXo3HLS4ZBuMU5yivzj73b4hZBZCsrn05TQZA5L" -d "fbid=568715569930034"
+
 Renew Token 
 curl localhost:5000/login -X GET --header "token: from login api"
 
@@ -39,4 +42,8 @@ curl localhost:5000/friends_request -X GET --header "token: from login api"
 
 Post a Friend Post
 curl localhost:5000/post -X POST --header "token: from login api" -d "content=I want to find someone to talk"
+
+Get posts
+curl localhost:5000/post -X GET --header "token: from login api" 
+
 

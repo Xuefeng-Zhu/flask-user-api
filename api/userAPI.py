@@ -5,27 +5,29 @@ from model.user import User
 from mongoengine.errors import NotUniqueError, ValidationError
 from util.userAuth import auth_required, load_token
 from util.emails import send_activate_account_email
-import requests 
+import requests
 
 
 userParser = reqparse.RequestParser()
 userParser.add_argument('email', type=str)
 userParser.add_argument('password', type=str)
 
+
 class UserAPI(Resource):
+
     def post(self):
         args = userParser.parse_args()
         email = args['email']
         password = args['password']
         if email is None or password is None:
-            abort(400)    
+            abort(400)
 
         user = User(email=email)
         user.hash_password(password)
         try:
             user.save()
         except ValidationError, e:
-            return {'status': 'error', 'message': e.message}  
+            return {'status': 'error', 'message': e.message}
         except NotUniqueError, e:
             return {'status': 'error', 'message': e.message}
 
@@ -36,7 +38,8 @@ class UserAPI(Resource):
 
 
 class LoginAPI(Resource):
-    # renew token by using old valid token 
+    # renew token by using old valid token
+
     @auth_required
     def get(self, user_id):
         user = User.objects(id=user_id).first()
@@ -50,7 +53,7 @@ class LoginAPI(Resource):
         password = args['password']
         if email is None or password is None:
             abort(400)
-  
+
         user = User.objects(email=email).first()
 
         if not user or not user.verify_password(password):
@@ -68,7 +71,9 @@ fbUserParser.add_argument('fbid', type=str)
 fbUserParser.add_argument('fbtoken', type=str)
 fbUserParser.add_argument('fbemail', type=str)
 
+
 class FBUserAPI(Resource):
+
     def post(self):
         args = fbUserParser.parse_args()
         fb_id = args['fbid']
@@ -76,11 +81,12 @@ class FBUserAPI(Resource):
         fb_email = args['fbemail']
         if fb_id is None or fb_token is None or fb_email is None:
             abort(400)    # missing arguments
-        
-        fbuser_info = requests.get('https://graph.facebook.com/me?access_token=%s' %fb_token).json()
+
+        fbuser_info = requests.get(
+            'https://graph.facebook.com/me?access_token=%s' % fb_token).json()
         if not fbuser_info.get('id') or fb_id != fbuser_info['id']:
             abort(406)
-        
+
         user = User(email=fb_email, fb_id=fb_id)
         try:
             user.save()
@@ -93,20 +99,22 @@ class FBUserAPI(Resource):
 
 
 class FBLoginAPI(Resource):
+
     def post(self):
         args = fbUserParser.parse_args()
         fb_id = args['fbid']
-        fb_token = args['fbtoken']   
+        fb_token = args['fbtoken']
         if fb_id is None or fb_token is None:
-           abort(400)
+            abort(400)
 
-        fbuser_info = requests.get('https://graph.facebook.com/me?access_token=%s' %fb_token).json()
+        fbuser_info = requests.get(
+            'https://graph.facebook.com/me?access_token=%s' % fb_token).json()
         if not fbuser_info.get('id') or fb_id != fbuser_info['id']:
             abort(406)
 
         fb_email = args['fbemail']
         user = User.objects(email=fb_email).first()
-        
+
         if user is None:
             user = User(email=fb_email, fb_id=fbuser_info['id'])
             user.save()
@@ -118,7 +126,10 @@ class FBLoginAPI(Resource):
 
 activateAccountParser = reqparse.RequestParser()
 activateAccountParser.add_argument('token', type=str)
+
+
 class ActivateAPI(Resource):
+
     def get(self):
         args = activateAccountParser.parse_args()
         token = args['token']
@@ -133,4 +144,3 @@ class ActivateAPI(Resource):
         user.save()
 
         return "Your account has been activated!"
-

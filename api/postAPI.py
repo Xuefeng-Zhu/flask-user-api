@@ -32,4 +32,4 @@ class PostAPI(Resource):
         post = Post(user=user_id, user_profile=profile, content=content)
         post.save()
 
-        return posts_list_serialize([post])
+        return {'status': 'success'}

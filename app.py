@@ -1,5 +1,6 @@
-from flask import Flask, request, abort
-from flask.ext.restful import Resource, Api
+from flask import Flask
+from flask.ext.restful import Api
+from flask.ext.restful.utils import cors
 from flask_mail import Mail
 from model import db, bcrypt, redis_store
 from api.userAPI import UserAPI, LoginAPI, FBUserAPI, FBLoginAPI, ActivateAPI
@@ -17,6 +18,8 @@ redis_store.init_app(app)
 mail = Mail(app)
 
 api = Api(app)
+api.decorators = [cors.crossdomain(origin='*',
+                                   headers='my-header, accept, content-type')]
 
 api.add_resource(UserAPI, '/create_user')
 api.add_resource(LoginAPI, '/login')
@@ -39,6 +42,3 @@ api.add_resource(PostAPI, '/post')
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-
