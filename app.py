@@ -19,7 +19,7 @@ mail = Mail(app)
 
 api = Api(app)
 api.decorators = [cors.crossdomain(origin='*',
-                                   headers='my-header, accept, content-type')]
+                                   headers='my-header, accept, content-type, token')]
 
 api.add_resource(UserAPI, '/create_user')
 api.add_resource(LoginAPI, '/login')
