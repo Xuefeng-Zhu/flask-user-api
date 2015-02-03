@@ -6,6 +6,9 @@ from functools import wraps
 
 
 def load_token(token):
+    """
+    Turn the token from user into the user's id
+    """
     s = Serializer(current_app.config.get('SECRET_KEY'))
     try:
         user_id = s.loads(token)
@@ -17,6 +20,9 @@ def load_token(token):
 
 
 def auth_required(f):
+    """
+    A decorate function used for API authorization
+    """
     @wraps(f)
     def decorated_function(*args, **kwargs):
         token = request.headers.get('token')

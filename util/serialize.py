@@ -1,3 +1,7 @@
+"""
+A list of serialize function for API output
+"""
+
 def serialize(object):
     result = {}
     for key in object:
