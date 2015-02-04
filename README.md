@@ -21,6 +21,9 @@ The API is currently deployed on Heroku
 #### Install dependency 
 	pip install -r requirements.txt
 
+#### Config
+	change the arguments in config.py	
+	
 #### Run 
 	python app.py
 	
@@ -75,7 +78,18 @@ Get posts
 curl localhost:5000/post -X GET --header "token: from login api" 
 ```		
 	
+#### Deployment on Heroku
+Just create a new heroku application, and push the code to heroku
 
 ## Acknowledgements
 This project is built on following libraries
-+ []
++ [boto](https://github.com/boto/boto)
++ [Flask](https://github.com/mitsuhiko/flask)
++ [flask-bcrypt](https://github.com/maxcountryman/flask-bcrypt)
++ [Flask-Mail](https://github.com/mattupstate/flask-mail)
++ [flask-mongoengine](https://github.com/MongoEngine/flask-mongoengine)
++ [flask-redis](https://github.com/rhyselsmore/flask-redis)
++ [Flask-RESTful](https://github.com/flask-restful/flask-restful)
++ [gunicorn](https://github.com/benoitc/gunicorn)
++ [itsdangerous](https://github.com/mitsuhiko/itsdangerous)
++ [requests](https://github.com/kennethreitz/requests)
