@@ -11,6 +11,11 @@ Such as
 + Friend List management 
 + Simple Post
 
+## Demo 
+The API is currently deployed on Heroku
+
+[Demo](http://floating-retreat-4846.herokuapp.com/login)
+
 ## Usage
 
 #### Install dependency 
@@ -70,11 +75,6 @@ Get posts
 curl localhost:5000/post -X GET --header "token: from login api" 
 ```		
 	
-
-## Demo 
-The API is currently deployed on Heroku
-
-[Demo](http://floating-retreat-4846.herokuapp.com/login)
 
 ## Acknowledgements
 This project is built on following libraries
