@@ -19,6 +19,17 @@ The API is currently deployed on Heroku
 ## Architecture
 Flask User API stores data in mongodb. All user password is hashed using bcrypt. In order to access the main functionality, users need to use the token from **login** endpoint. The token is generated through itsdangerous and lives for certain time. User ID and token pair is cache in **redis** to reduce database query.
 
+This is a list files or directories for flask user api
++ `/api` - scripts implement actual api functions
++ `/model` - define database model
++ `/templates` - email templates 
++ `/test` - simple test scripts using requests
++ `/util` - utilities for sending email, authorization, and serialization 
++ `app.py` - script to bootstrap the app
++ `config.py` - configuration for the app  
++ `Procgile` - heroku server configuration
++ `requirements.txt` - dependency file
+
 ## Usage
 
 #### Install dependency 
