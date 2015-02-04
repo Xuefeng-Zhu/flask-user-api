@@ -5,7 +5,7 @@ Login
 curl localhost:5000/login -X POST -d "email=123@gmail.com" -d "password=123"
 
 FB Login 
-curl localhost:5000/fb_login -X POST -d "fbtoken=CAAWFWZCaHh38BAKW2k8CTczcC45chZCjluWKCpZA0XqYwcdk7mBNZC9IbdV98IGq99DGRAwuByssdJ0lK11oHs5221aNrpTmg95Ggl4pZAZBsItzyeDY3XAAkvQvQgBcZBZAX2LZAuQNZCpoKXHrgnJKg6tfX9Eqw58sZBttGOQdmqF6QbTWTlzQEXo3HLS4ZBuMU5yivzj73b4hZBZCsrn05TQZA5L" -d "fbid=568715569930034"
+curl localhost:5000/fb_login -X POST -d "fbtoken=" -d "fbid="
 
 Renew Token 
 curl localhost:5000/login -X GET --header "token: from login api"
