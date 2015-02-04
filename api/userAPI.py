@@ -16,6 +16,9 @@ userParser.add_argument('password', type=str)
 class UserAPI(Resource):
 
     def post(self):
+        """
+        Create a new user and send an activation email
+        """
         args = userParser.parse_args()
         email = args['email']
         password = args['password']
@@ -42,16 +45,21 @@ class LoginAPI(Resource):
 
     def options(self):
         pass
-    # renew token by using old valid token
 
     @auth_required
     def get(self, user_id):
+        """
+        Renew the authorisation token by providing old token
+        """
         user = User.objects(id=user_id).first()
         token = user.generate_auth_token(expiration=360000)
         redis_store.set(user_id, token)
         return {'token': token}
 
     def post(self):
+        """
+        Login in the user and store the user id and token pair into redis
+        """
         args = userParser.parse_args()
         email = args['email']
         password = args['password']
@@ -81,13 +89,17 @@ fbUserParser.add_argument('fbemail', type=str)
 class FBUserAPI(Resource):
 
     def post(self):
+        """
+        Sign up with Facebook account and return a token
+        """
         args = fbUserParser.parse_args()
         fb_id = args['fbid']
         fb_token = args['fbtoken']
         fb_email = args['fbemail']
         if fb_id is None or fb_token is None or fb_email is None:
-            abort(400)    # missing arguments
+            abort(400)
 
+        # verify the user's facebook account using the facebook token
         fbuser_info = requests.get(
             'https://graph.facebook.com/me?access_token=%s' % fb_token).json()
         if not fbuser_info.get('id') or fb_id != fbuser_info['id']:
@@ -107,12 +119,17 @@ class FBUserAPI(Resource):
 class FBLoginAPI(Resource):
 
     def post(self):
+        """
+        Login in with a Facebook account if the user has existed
+        Otherwises, create a new user with information from Facebook
+        """
         args = fbUserParser.parse_args()
         fb_id = args['fbid']
         fb_token = args['fbtoken']
         if fb_id is None or fb_token is None:
             abort(400)
 
+        # verify the user's facebook account using the facebook token
         fbuser_info = requests.get(
             'https://graph.facebook.com/me?access_token=%s' % fb_token).json()
         if not fbuser_info.get('id') or fb_id != fbuser_info['id']:
@@ -137,6 +154,9 @@ activateAccountParser.add_argument('token', type=str)
 class ActivateAPI(Resource):
 
     def get(self):
+        """
+        Activate the user's account
+        """
         args = activateAccountParser.parse_args()
         token = args['token']
         if token is None:

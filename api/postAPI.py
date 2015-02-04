@@ -14,6 +14,9 @@ class PostAPI(Resource):
 
     @auth_required
     def get(self, user_id):
+        """
+        Get posts by users
+        """
         args = postParser.parse_args()
         page = args['page']
         if page is None:
@@ -27,6 +30,9 @@ class PostAPI(Resource):
 
     @auth_required
     def post(self, user_id):
+        """
+        Make a new post
+        """
         args = postParser.parse_args()
         content = args['content']
 

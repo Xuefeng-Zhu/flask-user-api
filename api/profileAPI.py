@@ -17,7 +17,9 @@ class ProfileAPI(Resource):
 
     @auth_required
     def get(self, user_id):
-        # load profile
+        """
+        Load the user's profile
+        """
         profile = Profile.objects(user=user_id).first()
         if profile is None:
             return {}
@@ -26,6 +28,10 @@ class ProfileAPI(Resource):
 
     @auth_required
     def post(self, user_id):
+        """
+        Edit the user's profile if the profile exists
+        Otherwise, create a new profile document
+        """
         args = profileParser.parse_args()
         username = args['username']
         school = args['school']
@@ -49,14 +55,19 @@ class ProfileIconAPI(Resource):
 
     @auth_required
     def post(self, user_id):
+        """
+        Upload user's profile icon
+        """
         uploaded_file = request.files['upload']
         filename = "_".join([user_id, uploaded_file.filename])
 
+        # upload the file to S3 server
         conn = boto.connect_s3(os.environ['S3_KEY'], os.environ['S3_SECRET'])
         bucket = conn.get_bucket('profile-icon')
         key = bucket.new_key(filename)
         key.set_contents_from_file(uploaded_file)
 
+        # update the user's profile document
         profile = Profile.objects(user=user_id).first()
         if profile is None:
             profile = Profile(user=user_id, profile_icon=
@@ -73,6 +84,9 @@ class SearchProfileAPI(Resource):
 
     @auth_required
     def get(self, user_id):
+        """
+        Search users with either username or school
+        """
         args = profileParser.parse_args()
         username = args['username']
         school = args['school']

@@ -14,7 +14,9 @@ class FriendsListAPI(Resource):
 
     @auth_required
     def get(self, user_id):
-        # load profile
+        """
+        Get the user's friend list
+        """
         friends = Friend.objects(user=user_id).only('friends_list').first()
         if friends is None:
             return abort(400)
@@ -23,6 +25,10 @@ class FriendsListAPI(Resource):
 
     @auth_required
     def post(self, user_id):
+        """
+        Add a specific user to friend list, and
+        send a friend request to that user
+        """
         args = friendsParser.parse_args()
         profile_id = args['profile_id']
 
@@ -33,12 +39,14 @@ class FriendsListAPI(Resource):
         if friend_profile is None:
             abort(400)
 
+        # add the user to friend list
         success = Friend.objects(user=user_id).only(
             'friends_list').update_one(add_to_set__friends_list=profile_id)
         if success is 0:
             friends = Friend(user=user_id, friends_list=[profile_id])
             friends.save()
 
+        # put the friend request to the user's request list
         user_profile = Profile.objects(user=user_id).only('id').first()
         success = Request.objects(user=friend_profile.user).update_one(
             add_to_set__requests_list=user_profile)
@@ -53,6 +61,9 @@ class FriendsListAPI(Resource):
 
     @auth_required
     def delete(self, user_id):
+        """
+        Delete a specific user from the friend list
+        """
         args = friendsParser.parse_args()
         profile_id = args['profile_id']
 
@@ -72,7 +83,9 @@ class FriendsRequestAPI(Resource):
 
     @auth_required
     def get(self, user_id):
-        print user_id
+        """
+        Get a list of friend request
+        """
         request = Request.objects(user=user_id).only('requests_list').first()
         if request is None:
             return {}
@@ -81,6 +94,11 @@ class FriendsRequestAPI(Resource):
 
     @auth_required
     def post(self, user_id):
+        """
+        Accept the friend request
+        Add the user into friend list
+        Remove the request from friend request
+        """
         args = friendsParser.parse_args()
         profile_id = args['profile_id']
 
@@ -103,6 +121,10 @@ class FriendsRequestAPI(Resource):
 
     @auth_required
     def delete(self, user_id):
+        """
+        Decline the friend request
+        Reomve the request from friend request
+        """
         args = friendsParser.parse_args()
         profile_id = args['profile_id']
 

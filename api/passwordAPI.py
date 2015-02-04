@@ -16,6 +16,9 @@ class ChangePasswordAPI(Resource):
 
     @auth_required
     def post(self, user_id):
+        """
+        Change the old password to the new password
+        """
         args = passwordParser.parse_args()
         old_password = args['old_password']
         new_password = args['new_password']
@@ -42,6 +45,9 @@ forgetPasswordParser.add_argument('school', type=str)
 class ForgetPasswordAPI(Resource):
 
     def get(self):
+        """
+        Reset user's password and return the temporary password
+        """
         args = forgetPasswordParser.parse_args()
         token = args['token']
 
@@ -53,6 +59,7 @@ class ForgetPasswordAPI(Resource):
         if user is None:
             return {'status': 'error', 'token': 'Token is not valid'}
 
+        # generate a random temporary password
         temp_password = (''.join(str(random.randint(0, 9)) for x in range(8)))
         user.hash_password(temp_password)
         user.save()
@@ -60,6 +67,10 @@ class ForgetPasswordAPI(Resource):
         return "Your temperate password is: %s" % temp_password
 
     def post(self):
+        """
+        Verify the information from user
+        Send a reset password email if the information is correct
+        """
         args = forgetPasswordParser.parse_args()
         email = args['email']
         username = args['username']
