@@ -16,6 +16,9 @@ The API is currently deployed on Heroku
 
 [Demo](http://floating-retreat-4846.herokuapp.com/login)
 
+## Architecture
+Flask User API stores data in mongodb. All user password is hashed using bcrypt. In order to access the main functionality, users need to use the token from **login** endpoint. The token is generated through itsdangerous and lives for certain time. User ID and token pair is cache in **redis** to reduce database query.
+
 ## Usage
 
 #### Install dependency 
