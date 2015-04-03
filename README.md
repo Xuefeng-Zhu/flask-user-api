@@ -95,6 +95,10 @@ curl localhost:5000/post -X GET --header "token: from login api"
 #### Deployment on Heroku
 Just create a new heroku application, and push the code to heroku
 
+	heroku create
+	git push heroku
+	heroku ps:scale web=1
+
 ## Acknowledgements
 This project is built on following libraries
 + [boto](https://github.com/boto/boto)
