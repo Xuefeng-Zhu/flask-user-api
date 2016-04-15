@@ -5,9 +5,9 @@ This file stores all flask configuration information
 REDIS_URL = "redis://:123123@pub-redis-16551.us-east-1-2.3.ec2.garantiadata.com:16551/0"
 MONGODB_SETTINGS = {
     'db': 'flask-test',
-    'host': 'ds027741.mongolab.com',
+    'host': 'ds027741.mlab.com',
     'port': 27741,
-    'username': 'flask-admin',
+    'username': 'flask-test',
     'password': '123123'
 }
 SECRET_KEY = 'flask is cool'
