@@ -2,7 +2,7 @@ from flask import Flask
 from flask.ext.restful import Api
 from flask.ext.restful.utils import cors
 from flask_mail import Mail
-from model import db, bcrypt, redis_store
+from model import db, redis_store
 from api.userAPI import UserAPI, LoginAPI, FBUserAPI, FBLoginAPI, ActivateAPI
 from api.profileAPI import ProfileAPI, ProfileIconAPI, SearchProfileAPI
 from api.friendsAPI import FriendsListAPI, FriendsRequestAPI
@@ -14,7 +14,6 @@ app = Flask(__name__)
 app.config.from_object('config')
 
 db.init_app(app)
-bcrypt.init_app(app)
 redis_store.init_app(app)
 mail = Mail(app)
 

@@ -1,7 +1,8 @@
 from flask import current_app
-from model import db, bcrypt
+from model import db
 from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer)
+import hashlib
 
 
 class User(db.Document):
@@ -17,14 +18,14 @@ class User(db.Document):
         """
         crypt the raw password and store it into database
         """
-        self.password_hash = bcrypt.generate_password_hash(password)
+        self.password_hash = hashlib.sha224(password).hexdigest()
 
     def verify_password(self, password):
         """
         check if the password from user matches
         the password stored in the database
         """
-        return bcrypt.check_password_hash(self.password_hash, password)
+        return hashlib.sha224(password).hexdigest() == self.password_hash
 
     def generate_auth_token(self, expiration=3600):
         """
