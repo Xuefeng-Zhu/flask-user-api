@@ -2,7 +2,7 @@
 This file stores all flask configuration information
 """
 
-REDIS_URL = "redis://:123123@pub-redis-17784.us-east-1-2.1.ec2.garantiadata.com:17784/0"
+REDIS_URL = "redis://:123123@pub-redis-16551.us-east-1-2.3.ec2.garantiadata.com:16551/0"
 MONGODB_SETTINGS = {
     'db': 'flask-test',
     'host': 'ds027741.mongolab.com',
